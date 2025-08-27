@@ -1,0 +1,18 @@
+# secrets
+.env
+**/client_secret_*.json
+!.env.example
+
+# python
+venv/
+**/__pycache__/
+*.pyc
+
+# node/web 
+node_modules/
+dist/
+build/
+
+# OS/Editor
+.DS_Store
+.vscode/

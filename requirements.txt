@@ -1,0 +1,23 @@
+fastapi
+uvicorn[standard]
+
+# Database
+sqlalchemy
+sqlalchemy[asyncio]
+asyncpg  
+aiosqlite  
+
+# Utils
+pydantic
+python-dotenv
+
+
+starlette
+
+
+uvicorn
+httpx
+python-dotenv
+python-jose[cryptography]
+google-auth
+
