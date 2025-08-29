@@ -20,4 +20,5 @@ httpx
 python-dotenv
 python-jose[cryptography]
 google-auth
+httpx
 

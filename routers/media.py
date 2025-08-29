@@ -23,7 +23,7 @@ async def get_medias(
 # --- Create a new media ---
 @router.post("/medias", response_model=Media, status_code=status.HTTP_201_CREATED)
 async def create_media(media: Media, db: AsyncSession = Depends(get_db)):
-    # چک وجود
+    
     exists = await db.execute(select(MediaORM).where(MediaORM.media_id == media.media_id))
     if exists.scalar_one_or_none():
         raise HTTPException(status_code=409, detail="media_id already exists")
