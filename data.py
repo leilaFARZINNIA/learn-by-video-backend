@@ -54,9 +54,9 @@ MEDIAS = [
     {"media_id": "media_16", "media_title": "K8s (podcast)", "media_description": "Pods, Deployments, Services.", "course_id": "course_5", "media_url": VID["fbj"], "media_transcript": long_transcript("K8s")},
 
     # Digital Transformation
-    {"media_id": "media_17", "media_title": "Cloud (text)", "media_description": "IaaS, PaaS, SaaS explained.", "course_id": "course_6", "media_url": "", "media_transcript": long_transcript("Cloud")},
-    {"media_id": "media_18", "media_title": "AI (text)", "media_description": "AI, ML, DL in enterprise.", "course_id": "course_6", "media_url": "", "media_transcript": long_transcript("AI")},
-    {"media_id": "media_19", "media_title": "IoT (text)", "media_description": "IoT devices, risks, and security.", "course_id": "course_6", "media_url": "", "media_transcript": long_transcript("IoT")},
+    {"media_id": "media_17", "media_title": "Cloud (text)", "media_description": "IaaS, PaaS, SaaS explained.", "course_id": "course_6", "media_url":  VID["bbb"], "media_transcript": long_transcript("Cloud")},
+    {"media_id": "media_18", "media_title": "AI (text)", "media_description": "AI, ML, DL in enterprise.", "course_id": "course_6", "media_url": VID["ed"], "media_transcript": long_transcript("AI")},
+    {"media_id": "media_19", "media_title": "IoT (text)", "media_description": "IoT devices, risks, and security.", "course_id": "course_6", "media_url": VID["fbj"], "media_transcript": long_transcript("IoT")},
 ]
 
 async def main():
