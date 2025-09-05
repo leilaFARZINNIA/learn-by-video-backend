@@ -1,47 +1,27 @@
-# auth/deps.py
-import os, uuid
-from fastapi import Depends, HTTPException, Header, Request
-from jose import jwt, JWTError
-from sqlalchemy.ext.asyncio import AsyncSession
-from db.postgres import get_db
-from models.user import UserORM
-from dotenv import load_dotenv
-
-load_dotenv()
-
-SESSION_SECRET = os.getenv("SESSION_SECRET", "change-me")
-COOKIE_NAME    = os.getenv("SESSION_COOKIE_NAME", "sid") 
-
-async def current_user(
-    request: Request,
-    db: AsyncSession = Depends(get_db),
-    authorization: str | None = Header(default=None),
-) -> UserORM:
-    token: str | None = None
-
-   
-    if authorization:
-        parts = authorization.split(" ", 1)
-        if len(parts) == 2 and parts[0].lower() == "bearer":
-            token = parts[1].strip()
+import time, firebase_admin
+from firebase_admin import auth, credentials
+from fastapi import Request, HTTPException
 
 
-    if not token:
-        token = request.cookies.get(COOKIE_NAME)
+if not firebase_admin._apps:
+    firebase_admin.initialize_app(credentials.ApplicationDefault())
 
-    if not token:
-        raise HTTPException(401, "No session")
+class Identity(dict):
+    @property
+    def uid(self): return self.get("uid")
+    @property
+    def email(self): return self.get("email")
+    @property
+    def is_recent(self):  
+        return (time.time() - self.get("auth_time", 0)) <= 300
 
+def get_identity(req: Request) -> Identity:
+    authz = req.headers.get("Authorization", "")
+    if not authz.startswith("Bearer "):
+        raise HTTPException(401, "Missing token")
+    token = authz.split()[1]
     try:
-        payload = jwt.decode(token, SESSION_SECRET, algorithms=["HS256"])
-        uid_str = payload.get("uid")
-        if not uid_str:
-            raise HTTPException(401, "Bad session")
-        uid = uuid.UUID(uid_str)
-    except (JWTError, ValueError):
-        raise HTTPException(401, "Bad session")
-
-    user = await db.get(UserORM, uid)
-    if not user:
-        raise HTTPException(401, "User not found")
-    return user
+        info = auth.verify_id_token(token) 
+        return Identity(info)
+    except Exception:
+        raise HTTPException(401, "Invalid or expired token")
